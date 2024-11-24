@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductManager.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using ProductManager.Infrastructure.Persistence;
 namespace ProductManager.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductManagerDbContext))]
-    partial class ProductManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241124184731_AddUserFields")]
+    partial class AddUserFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
