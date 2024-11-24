@@ -1,5 +1,7 @@
 using ProductManager.API.Extensions;
 using ProductManager.Infrastructure.Extensions;
+using ProductManager.Infrastructure.Seeders;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +9,13 @@ builder.AddPresentation();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+var scope = app.Services.CreateScope();
 
-// Configure the HTTP request pipeline.
+var seeder = scope.ServiceProvider.GetRequiredService<IProductManagerSeeder>();
+await seeder.Seed();
+
+app.UseSerilogRequestLogging();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
