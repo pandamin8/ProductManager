@@ -15,6 +15,10 @@ public static class ServiceCollectionExtensions
         var connectionString = configuration.GetConnectionString("ProductManagerDb");
         services.AddDbContext<ProductManagerDbContext>(options => options.UseSqlServer(connectionString));
         
+        services.AddIdentityApiEndpoints<User>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ProductManagerDbContext>();
+        
         services.AddScoped<IProductManagerSeeder, ProductManagerSeeder>();
     }
 }
