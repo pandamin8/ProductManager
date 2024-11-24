@@ -1,0 +1,19 @@
+﻿version: '3.4'
+
+services:
+  productmanager.api:
+    image: productmanager.api
+    build:
+      context: .
+      dockerfile: ProductManager.API/Dockerfile
+    ports:
+      - "8080:8080"  # Map host port 8080 to container port 8080
+    environment:
+      - ASPNETCORE_URLS=http://+:8080  # Set the application to listen on port 8080
+
+#services:
+#  productmanager.api:
+#    image: productmanager.api
+#    build:
+#      context: .
+#      dockerfile: ProductManager.API/Dockerfile
