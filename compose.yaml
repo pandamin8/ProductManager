@@ -1,19 +1,30 @@
-﻿version: '3.4'
+﻿version: '3.8'
+
+volumes:
+  sqlserver_data:
 
 services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=$Sa_Password:SecureDatabase@123
+      - MSSQL_PID=Developer
+    ports:
+      - 1433:1433
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: always
+  
   productmanager.api:
     image: productmanager.api
     build:
       context: .
       dockerfile: ProductManager.API/Dockerfile
     ports:
-      - "8080:8080"  # Map host port 8080 to container port 8080
+      - "8080:8080"
+    depends_on:
+      - sqlserver
     environment:
-      - ASPNETCORE_URLS=http://+:8080  # Set the application to listen on port 8080
+      - ASPNETCORE_URLS=http://+:8080
 
-#services:
-#  productmanager.api:
-#    image: productmanager.api
-#    build:
-#      context: .
-#      dockerfile: ProductManager.API/Dockerfile
