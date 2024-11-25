@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using ProductManager.API.Document;
 using ProductManager.API.Middlewares;
 using Serilog;
 
@@ -33,6 +34,8 @@ public static class WebApplicationBuilderExtension
                     []
                 }
             });
+            
+            options.DocumentFilter<DocumentEndpointsFilter>();
         });
 
         builder.Services.AddScoped<ErrorHandlingMiddleware>();
