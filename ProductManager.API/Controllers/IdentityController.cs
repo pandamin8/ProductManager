@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProductManager.Application.Users.Commands.AssignUserRole;
 using ProductManager.Application.Users.Dtos;
 using ProductManager.Application.Users.Queries.GetCurrentUser;
 
@@ -18,5 +19,17 @@ public class IdentityController(IMediator mediator) : ControllerBase
     {
         var user = await mediator.Send(new GetCurrentUserQuery());
         return Ok(user);
+    }
+
+    [HttpPost("assignRole")]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AssignRoleAsync([FromBody] AssignUserRoleCommand command)
+    {
+        await mediator.Send(command);
+        return NoContent();
     }
 }
