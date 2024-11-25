@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using ProductManager.API.Middlewares;
 using Serilog;
 
 namespace ProductManager.API.Extensions;
@@ -33,6 +34,8 @@ public static class WebApplicationBuilderExtension
                 }
             });
         });
+
+        builder.Services.AddScoped<ErrorHandlingMiddleware>();
         
         builder.Host.UseSerilog(((context, configuration) =>
                 configuration.ReadFrom.Configuration(context.Configuration)
