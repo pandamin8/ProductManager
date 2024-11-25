@@ -1,4 +1,5 @@
 using ProductManager.API.Extensions;
+using ProductManager.Application.Extensions;
 using ProductManager.Domain.Entities;
 using ProductManager.Infrastructure.Extensions;
 using ProductManager.Infrastructure.Seeders;
@@ -7,6 +8,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddPresentation();
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
@@ -26,5 +28,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGroup("/identity").WithTags("Identity").MapIdentityApi<User>();
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
