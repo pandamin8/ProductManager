@@ -14,7 +14,25 @@ public class ProductManagerDbContext(DbContextOptions<ProductManagerDbContext> o
         base.OnModelCreating(builder);
 
         builder.Entity<Product>()
-            .OwnsOne(product => product.ManufactureContact);
+            .HasIndex(product => product.ProduceDate)
+            .IsUnique();
+        
+        builder.Entity<Product>()
+            .OwnsOne(product => product.ManufactureContact, contact =>
+            {
+                contact.Property(c => c.ManufactureEmail)
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                contact.Property(c => c.ManufacturePhone)
+                    .HasMaxLength(11)
+                    .IsRequired();
+                
+                contact.HasIndex(c => c.ManufactureEmail)
+                    .IsUnique();
+                contact.HasIndex(c => c.ManufacturePhone)
+                    .IsUnique();
+            });
 
         builder.Entity<User>()
             .HasMany(user => user.Products)
