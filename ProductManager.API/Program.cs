@@ -1,4 +1,5 @@
 using ProductManager.API.Extensions;
+using ProductManager.API.Middlewares;
 using ProductManager.Application.Extensions;
 using ProductManager.Domain.Entities;
 using ProductManager.Infrastructure.Extensions;
@@ -17,6 +18,8 @@ var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<IProductManagerSeeder>();
 await seeder.Seed();
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
@@ -29,6 +32,7 @@ app.UseHttpsRedirection();
 
 app.MapGroup("/identity").WithTags("Identity").MapIdentityApi<User>();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
