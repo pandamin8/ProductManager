@@ -41,6 +41,7 @@ public class RegisterUserCommandHandlerTest
     [Fact]
     public async Task Handle_ForValidCommand_DoesNotThrowException()
     {
+        // Arrange
         var user = new User { Email = _command.Email };
 
         _mapperMock.Setup(m => m.Map<User>(_command)).Returns(user);
@@ -72,6 +73,7 @@ public class RegisterUserCommandHandlerTest
     [Fact]
     public async Task Handle_WhenUserAlreadyExists_ThrowsConflictException()
     {
+        // Arrange
         var existingUser = new User { Email = _command.Email };
 
         _userManagerMock.Setup(um => um.FindByEmailAsync(_command.Email))
@@ -89,6 +91,7 @@ public class RegisterUserCommandHandlerTest
     [Fact]
     public async Task Handle_WhenRoleAssignmentFails_ThrowsException()
     {
+        // Arrange
         var user = new User { Email = _command.Email };
 
         _mapperMock.Setup(m => m.Map<User>(_command)).Returns(user);
