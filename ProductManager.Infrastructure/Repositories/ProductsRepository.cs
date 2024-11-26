@@ -7,7 +7,8 @@ namespace ProductManager.Infrastructure.Repositories;
 
 public class ProductsRepository(ProductManagerDbContext dbContext) : IProductsRepository
 {
-    public async Task<(IEnumerable<Product>, int)> GetAllMatchingAsync(string? searchPhrase, int pageNumber, int pageSize)
+    public async Task<(IEnumerable<Product>, int)> GetAllMatchingAsync(string? searchPhrase, int pageNumber,
+        int pageSize)
     {
         var searchPhraseLower = searchPhrase?.ToLower();
 
@@ -42,10 +43,29 @@ public class ProductsRepository(ProductManagerDbContext dbContext) : IProductsRe
         return product.Id;
     }
 
+    public async Task<Product?> GetByManufacturerEmail(string email)
+    {
+        var product = await dbContext
+            .Products
+            .FirstOrDefaultAsync(product => product.ManufactureContact.ManufactureEmail == email);
+
+        return product;
+    }
+
+    public async Task<Product?> GetByManufacturerPhoneNumber(string phoneNumber)
+    {
+        var product = await dbContext
+            .Products
+            .FirstOrDefaultAsync(product => product.ManufactureContact.ManufacturePhone == phoneNumber);
+
+        return product;
+    }
+
     public async Task DeleteAsync(Product product)
     {
         dbContext.Products.Remove(product);
-        await dbContext.SaveChangesAsync();    }
+        await dbContext.SaveChangesAsync();
+    }
 
     public Task SaveChangesAsync() => dbContext.SaveChangesAsync();
 }
