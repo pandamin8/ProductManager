@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManager.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManager.Application.Tests", "ProductManager.Application.Tests\ProductManager.Application.Tests.csproj", "{196AC515-9F6F-4469-8EB9-B0ADAF5D5A29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManager.Infrastructure.Tests", "ProductManager.Infrastructure.Tests\ProductManager.Infrastructure.Tests.csproj", "{741E799E-228F-4804-89C5-106DD94E1977}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,5 +43,9 @@ Global
 		{196AC515-9F6F-4469-8EB9-B0ADAF5D5A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{196AC515-9F6F-4469-8EB9-B0ADAF5D5A29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{196AC515-9F6F-4469-8EB9-B0ADAF5D5A29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{741E799E-228F-4804-89C5-106DD94E1977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{741E799E-228F-4804-89C5-106DD94E1977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{741E799E-228F-4804-89C5-106DD94E1977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{741E799E-228F-4804-89C5-106DD94E1977}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
