@@ -12,10 +12,6 @@ public class ProductManagerDbContext(DbContextOptions<ProductManagerDbContext> o
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        builder.Entity<Product>()
-            .HasIndex(product => product.ProduceDate)
-            .IsUnique();
         
         builder.Entity<Product>()
             .OwnsOne(product => product.ManufactureContact, contact =>
