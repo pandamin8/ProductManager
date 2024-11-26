@@ -39,6 +39,7 @@ public class CreateProductCommandValidatorTest
 
     [Theory]
     [InlineData("11111111111")]
+    [InlineData("0bcd1111111")]
     [InlineData("123")]
     public void Validator_ForInvalidCommand_ShouldHaveValidationError(string phoneNumber)
     {

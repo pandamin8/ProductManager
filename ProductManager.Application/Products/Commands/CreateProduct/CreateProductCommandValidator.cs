@@ -18,6 +18,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
         
         RuleFor(p => p.ManufacturePhone)
             .Length(11)
+            .Must(BeAllNumeric)
             .Must(StartWithZero)
             .WithMessage("Manufacture phone must be in 0xxxxxxxxxx format");
     }
@@ -30,5 +31,10 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     private bool StartWithZero(string value)
     {
         return !string.IsNullOrEmpty(value) && value.StartsWith("0");
+    }
+
+    private bool BeAllNumeric(string value)
+    {
+        return !string.IsNullOrEmpty(value) && value.All(c => c >= '0' && c <= '9');
     }
 }
