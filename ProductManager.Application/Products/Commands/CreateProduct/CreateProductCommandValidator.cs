@@ -10,8 +10,12 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
             .Length(1, 100);
 
         RuleFor(p => p.ProduceDate)
-            .Must(BeNotInTheFuture)
+            .Must(NotBeInTheFuture)
             .WithMessage("Produce date cannot be in the future.");
+
+        RuleFor(p => p.ProduceDate)
+            .NotEmpty()
+            .WithMessage("Produce date cannot be empty");
 
         RuleFor(p => p.ManufactureEmail)
             .EmailAddress();
@@ -23,7 +27,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
             .WithMessage("Manufacture phone must be in 0xxxxxxxxxx format");
     }
     
-    private bool BeNotInTheFuture(DateOnly date)
+    private bool NotBeInTheFuture(DateOnly date)
     {
         return date <= DateOnly.FromDateTime(DateTime.Now);
     }
