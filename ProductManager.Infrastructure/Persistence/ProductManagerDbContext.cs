@@ -38,6 +38,13 @@ public class ProductManagerDbContext(DbContextOptions<ProductManagerDbContext> o
             .HasMany(user => user.Products)
             .WithOne(product => product.User)
             .HasForeignKey(product => product.UserId);
-
+            
+        builder.Entity<User>()
+            .Property(user => user.FirstName)
+            .HasMaxLength(100);
+        
+        builder.Entity<User>()
+            .Property(user => user.LastName)
+            .HasMaxLength(100);
     }
 }
