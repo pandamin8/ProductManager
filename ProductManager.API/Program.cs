@@ -19,6 +19,7 @@ var seeder = scope.ServiceProvider.GetRequiredService<IProductManagerSeeder>();
 await seeder.Seed();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<RequestTimeLoggingMiddleware>();
 
 app.UseSerilogRequestLogging();
 
