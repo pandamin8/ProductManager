@@ -54,6 +54,8 @@ public class RegisterUserCommandHandlerTest
         _userManagerMock.Setup(um => um.AddToRoleAsync(user, UserRoles.User))
             .ReturnsAsync(IdentityResult.Success);
 
+        _userManagerMock.Setup(um => um.DeleteAsync(user));
+
         var handler = new RegisterUserCommandHandler(
             _loggerMock.Object, _userManagerMock.Object, _mapperMock.Object);
 
@@ -64,6 +66,7 @@ public class RegisterUserCommandHandlerTest
         _userManagerMock.Verify(um => um.FindByEmailAsync(_command.Email), Times.Once);
         _userManagerMock.Verify(um => um.CreateAsync(user, _command.Password), Times.Once);
         _userManagerMock.Verify(um => um.AddToRoleAsync(user, UserRoles.User), Times.Once);
+        _userManagerMock.Verify(um => um.DeleteAsync(user), Times.Never);
     }
 
     [Fact]
