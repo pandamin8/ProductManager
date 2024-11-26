@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductManager.Application.Users.Commands.AssignUserRole;
+using ProductManager.Application.Users.Commands.EditUserDetails;
 using ProductManager.Application.Users.Commands.RegisterUser;
 using ProductManager.Application.Users.Commands.UnassignUserRole;
 using ProductManager.Application.Users.Dtos;
@@ -44,5 +45,13 @@ public class IdentityController(IMediator mediator) : ControllerBase
     {
         await mediator.Send(command);
         return Created("User registration successfully", null);
+    }
+
+    [HttpPatch("user")]
+    [Authorize]
+    public async Task<IActionResult> EditUserAsync([FromBody] EditUserDetailsCommand command)
+    {
+        await mediator.Send(command);
+        return NoContent();
     }
 }
