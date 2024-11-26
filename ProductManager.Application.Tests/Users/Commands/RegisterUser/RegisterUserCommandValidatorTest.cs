@@ -10,7 +10,7 @@ public class RegisterUserCommandValidatorTest
 {
 
     [Fact]
-    public void Validator_ForValidCommand_ShouldNotHavaValidationError()
+    public void Validator_ForValidCommand_ShouldNotHaveValidationError()
     {
         var command = new RegisterUserCommand()
         {
