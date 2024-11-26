@@ -24,10 +24,6 @@ public class IdentityController(IMediator mediator) : ControllerBase
 
     [HttpPost("assignRole")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AssignRoleAsync([FromBody] AssignUserRoleCommand command)
     {
         await mediator.Send(command);
