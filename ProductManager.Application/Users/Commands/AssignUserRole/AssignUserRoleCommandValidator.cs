@@ -13,12 +13,6 @@ public class AssignUserRoleCommandValidator : AbstractValidator<AssignUserRoleCo
         
         RuleFor(user => user.RoleName)
             .NotEmpty()
-            .Must(RoleExists)
             .WithMessage("Role doesn't exist.");
-    }
-    
-    private bool RoleExists(string roleName)
-    {
-        return roleName == UserRoles.Admin || roleName == UserRoles.User;
     }
 }
