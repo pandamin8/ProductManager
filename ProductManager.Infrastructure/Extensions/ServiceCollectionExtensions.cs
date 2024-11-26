@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductManager.Domain.Entities;
+using ProductManager.Domain.Interfaces;
+using ProductManager.Infrastructure.Authorization.Services;
 using ProductManager.Infrastructure.Persistence;
 using ProductManager.Infrastructure.Seeders;
 
@@ -20,5 +22,6 @@ public static class ServiceCollectionExtensions
             .AddEntityFrameworkStores<ProductManagerDbContext>();
         
         services.AddScoped<IProductManagerSeeder, ProductManagerSeeder>();
+        services.AddScoped<IProductAuthorizationService, ProductAuthorizationService>();
     }
 }
