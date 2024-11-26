@@ -11,7 +11,6 @@ namespace ProductManager.Application.Users.Commands.RegisterUser;
 public class RegisterUserCommandHandler(
     ILogger<RegisterUserCommandHandler> logger,
     UserManager<User> userManager,
-    IUserStore<User> userStore,
     IMapper mapper)
     : IRequestHandler<RegisterUserCommand>
 {
@@ -36,7 +35,7 @@ public class RegisterUserCommandHandler(
 
             if (!roleResult.Succeeded)
             {
-                await userStore.DeleteAsync(user, cancellationToken);
+                await userManager.DeleteAsync(user);
                 logger.LogError("User creation failed: {Errors}", string.Join(", ", roleResult.Errors.Select(e => e.Description)));
                 throw new Exception("User created but failed to assign role.");
             }
