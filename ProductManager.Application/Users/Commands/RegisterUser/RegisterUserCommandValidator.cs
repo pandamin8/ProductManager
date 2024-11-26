@@ -14,9 +14,9 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .NotEmpty();
 
         RuleFor(user => user.FirstName)
-            .NotEmpty();
+            .Length(3, 100);
 
         RuleFor(user => user.LastName)
-            .NotEmpty();
+            .Length(3, 100);
     }
 }
