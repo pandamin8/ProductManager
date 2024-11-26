@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductManager.Application.Users.Commands.AssignUserRole;
 using ProductManager.Application.Users.Commands.RegisterUser;
+using ProductManager.Application.Users.Commands.UnassignUserRole;
 using ProductManager.Application.Users.Dtos;
 using ProductManager.Application.Users.Queries.GetCurrentUser;
 
@@ -25,6 +26,14 @@ public class IdentityController(IMediator mediator) : ControllerBase
     [HttpPost("assignRole")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AssignRoleAsync([FromBody] AssignUserRoleCommand command)
+    {
+        await mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpDelete("unassignRole")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UnassignRoleAsync([FromBody] UnassignUserRoleCommand command)
     {
         await mediator.Send(command);
         return NoContent();
