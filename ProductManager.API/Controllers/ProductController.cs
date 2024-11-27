@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductManager.Application.Common;
 using ProductManager.Application.Products.Commands.CreateProduct;
+using ProductManager.Application.Products.Commands.DeleteProduct;
 using ProductManager.Application.Products.Commands.EditProduct;
 using ProductManager.Application.Products.Dtos;
 using ProductManager.Application.Products.Queries;
@@ -45,5 +46,13 @@ public class ProductController(IMediator mediator) : ControllerBase
     {
         var products = await mediator.Send(query);
         return Ok(products);
+    }
+
+    [HttpDelete("{id:int}")]
+    [Authorize]
+    public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+    {
+        await mediator.Send(new DeleteProductCommand(id));
+        return NoContent();
     }
 }
