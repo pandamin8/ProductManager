@@ -18,7 +18,7 @@ public class IdentityController(IMediator mediator) : ControllerBase
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<UserDto>> WhoAmIAsync()
+    public async Task<ActionResult<UserDto>> WhoAmI()
     {
         var user = await mediator.Send(new GetCurrentUserQuery());
         return Ok(user);
@@ -26,7 +26,7 @@ public class IdentityController(IMediator mediator) : ControllerBase
 
     [HttpPost("assignRole")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> AssignRoleAsync([FromBody] AssignUserRoleCommand command)
+    public async Task<IActionResult> AssignRole([FromBody] AssignUserRoleCommand command)
     {
         await mediator.Send(command);
         return NoContent();
@@ -34,14 +34,14 @@ public class IdentityController(IMediator mediator) : ControllerBase
 
     [HttpDelete("unassignRole")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> UnassignRoleAsync([FromBody] UnassignUserRoleCommand command)
+    public async Task<IActionResult> UnassignRole([FromBody] UnassignUserRoleCommand command)
     {
         await mediator.Send(command);
         return NoContent();
     }
 
     [HttpPost("registerUser")]
-    public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterUserCommand command)
+    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommand command)
     {
         await mediator.Send(command);
         return Created("User registration successfully", null);
@@ -49,7 +49,7 @@ public class IdentityController(IMediator mediator) : ControllerBase
 
     [HttpPatch("user")]
     [Authorize]
-    public async Task<IActionResult> EditUserAsync([FromBody] EditUserDetailsCommand command)
+    public async Task<IActionResult> EditUser([FromBody] EditUserDetailsCommand command)
     {
         await mediator.Send(command);
         return NoContent();

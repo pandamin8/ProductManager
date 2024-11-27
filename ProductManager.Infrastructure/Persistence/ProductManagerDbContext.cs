@@ -7,15 +7,11 @@ namespace ProductManager.Infrastructure.Persistence;
 public class ProductManagerDbContext(DbContextOptions<ProductManagerDbContext> options)
     : IdentityDbContext<User>(options)
 {
-    internal DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        builder.Entity<Product>()
-            .HasIndex(product => product.ProduceDate)
-            .IsUnique();
         
         builder.Entity<Product>()
             .OwnsOne(product => product.ManufactureContact, contact =>
