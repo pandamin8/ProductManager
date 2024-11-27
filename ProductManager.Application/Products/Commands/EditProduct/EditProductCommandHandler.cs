@@ -9,8 +9,8 @@ using ProductManager.Domain.Repositories;
 
 namespace ProductManager.Application.Products.Commands.EditProduct;
 
-public class EditProfileCommandHandler(
-    ILogger<EditProfileCommandHandler> logger,
+public class EditProductCommandHandler(
+    ILogger<EditProductCommandHandler> logger,
     IProductsRepository productRepository,
     IMapper mapper,
     IProductAuthorizationService authService) : IRequestHandler<EditProductCommand>
