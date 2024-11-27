@@ -7,7 +7,7 @@ namespace ProductManager.Infrastructure.Persistence;
 public class ProductManagerDbContext(DbContextOptions<ProductManagerDbContext> options)
     : IdentityDbContext<User>(options)
 {
-    internal DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
