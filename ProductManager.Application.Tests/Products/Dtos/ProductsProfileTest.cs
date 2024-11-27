@@ -3,6 +3,7 @@ using AutoMapper;
 using FluentAssertions;
 using JetBrains.Annotations;
 using ProductManager.Application.Products.Commands.CreateProduct;
+using ProductManager.Application.Products.Commands.EditProduct;
 using ProductManager.Application.Products.Dtos;
 using ProductManager.Domain.Entities;
 using Xunit;
@@ -60,5 +61,20 @@ public class ProductsProfileTest
         product.ManufactureContact.ManufactureEmail.Should().Be(command.ManufactureEmail);
         product.ManufactureContact.ManufacturePhone.Should().Be(command.ManufacturePhone);
         product.ProduceDate.Should().Be(command.ProduceDate);
+    }
+    
+    [Fact]
+    public void CreateMap_FromEditProductCommandToProduct_MapsCorrectly()
+    {
+        var command = new EditProductCommand
+        {
+            Name = "Test",
+            IsAvailable = false
+        };
+    
+        var product = _mapper.Map<Product>(command);
+    
+        product.Name.Should().Be(command.Name);
+        product.IsAvailable.Should().Be(command.IsAvailable);
     }
 }
