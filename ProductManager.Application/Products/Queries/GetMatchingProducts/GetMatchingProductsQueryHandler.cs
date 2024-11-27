@@ -16,9 +16,15 @@ public class GetMatchingProductsQueryHandler(
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Retrieving matching products.");
-        
+
         var (products, totalCount) =
-            await productsRepository.GetAllMatchingAsync(request.SearchPhrase, request.PageSize, request.PageNumber);
+            await productsRepository.GetAllMatchingAsync(
+                request.SearchPhrase,
+                request.PageSize,
+                request.PageNumber,
+                request.SortBy,
+                request.SortDirection
+            );
 
         var productsDto = mapper.Map<IEnumerable<ProductDto>>(products);
 
