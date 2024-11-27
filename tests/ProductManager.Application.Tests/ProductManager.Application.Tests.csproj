@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\ProductManager.Application\ProductManager.Application.csproj" />
     <ProjectReference Include="..\ProductManager.Application\ProductManager.Application.csproj" />
   </ItemGroup>
   
