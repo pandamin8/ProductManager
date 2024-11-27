@@ -1,5 +1,6 @@
 using AutoMapper;
 using ProductManager.Application.Products.Commands.CreateProduct;
+using ProductManager.Application.Products.Commands.EditProduct;
 using ProductManager.Domain.Entities;
 
 namespace ProductManager.Application.Products.Dtos;
@@ -20,5 +21,7 @@ public class ProductsProfile : Profile
                     ManufacturePhone = command.ManufacturePhone
                 }
             ));
+
+        CreateMap<EditProductCommand, Product>();
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductManager.Application.Common;
 using ProductManager.Application.Products.Commands.CreateProduct;
+using ProductManager.Application.Products.Commands.EditProduct;
 using ProductManager.Application.Products.Dtos;
 using ProductManager.Application.Products.Queries;
 using ProductManager.Application.Products.Queries.GetMatchingProducts;
@@ -27,6 +28,15 @@ public class ProductController(IMediator mediator) : ControllerBase
     {
         var product = await mediator.Send(new GetProductByIdQuery(id));
         return Ok(product);
+    }
+
+    [HttpPatch("{id:int}")]
+    [Authorize]
+    public async Task<IActionResult> EditProduct([FromRoute] int id, [FromBody] EditProductCommand command)
+    {
+        command.Id = id;
+        await mediator.Send(command);
+        return AcceptedAtAction(nameof(GetProductById), new { id }, null);
     }
 
     [HttpGet]
