@@ -13,15 +13,15 @@ public class ProductController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
     [Authorize(Roles = "User")]
-    public async Task<IActionResult> CreateProductAsync([FromBody] CreateProductCommand command)
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
     {
         var id = await mediator.Send(command);
 
-        return CreatedAtAction(nameof(GetProductByIdAsync), new { id }, null);
+        return CreatedAtAction(nameof(GetProductById), new { id }, null);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<ProductDto>> GetProductByIdAsync([FromRoute] int id)
+    public async Task<ActionResult<ProductDto>> GetProductById([FromRoute] int id)
     {
         var product = await mediator.Send(new GetProductByIdQuery(id));
         return Ok(product);
