@@ -1,9 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProductManager.Application.Common;
 using ProductManager.Application.Products.Commands.CreateProduct;
 using ProductManager.Application.Products.Dtos;
 using ProductManager.Application.Products.Queries;
+using ProductManager.Application.Products.Queries.GetMatchingProducts;
 
 namespace ProductManager.API.Controllers;
 
@@ -26,5 +28,12 @@ public class ProductController(IMediator mediator) : ControllerBase
         var product = await mediator.Send(new GetProductByIdQuery(id));
         return Ok(product);
     }
-    
+
+    [HttpGet]
+    public async Task<ActionResult<PageResult<ProductDto>>> GetMatchingProducts(
+        [FromQuery] GetMatchingProductsQuery query)
+    {
+        var products = await mediator.Send(query);
+        return Ok(products);
+    }
 }

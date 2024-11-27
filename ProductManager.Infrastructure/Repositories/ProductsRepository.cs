@@ -7,8 +7,8 @@ namespace ProductManager.Infrastructure.Repositories;
 
 public class ProductsRepository(ProductManagerDbContext dbContext) : IProductsRepository
 {
-    public async Task<(IEnumerable<Product>, int)> GetAllMatchingAsync(string? searchPhrase, int pageNumber,
-        int pageSize)
+    public async Task<(IEnumerable<Product>, int)> GetAllMatchingAsync(string? searchPhrase, int pageSize,
+        int pageNumber)
     {
         var searchPhraseLower = searchPhrase?.ToLower();
 
