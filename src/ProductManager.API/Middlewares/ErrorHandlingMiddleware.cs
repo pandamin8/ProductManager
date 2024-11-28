@@ -1,3 +1,5 @@
+using System.Net;
+using System.Text.Json;
 using ProductManager.Domain.Exceptions;
 
 namespace ProductManager.API.Middlewares;
@@ -8,7 +10,12 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
     {
         try
         {
-            await next.Invoke(context);
+            await next(context);
+
+            if (context.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
+            {
+                await context.Response.WriteAsync("You shall not pass!");
+            }
         }
         catch (ConflictException conflictException)
         {

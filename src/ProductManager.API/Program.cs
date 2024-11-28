@@ -18,7 +18,6 @@ var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<IProductManagerSeeder>();
 await seeder.Seed();
 
-app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseMiddleware<RequestTimeLoggingMiddleware>();
 
 app.UseSerilogRequestLogging();
@@ -34,6 +33,7 @@ app.UseHttpsRedirection();
 app.MapGroup("/identity").WithTags("Identity").MapIdentityApi<User>();
 
 app.UseAuthentication();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
