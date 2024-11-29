@@ -27,4 +27,7 @@ services:
       - sqlserver
     environment:
       - ASPNETCORE_URLS=http://+:8080
+    command: >
+      sh -c "dotnet ef database update &&
+             dotnet ProductManager.API.dll"
 
