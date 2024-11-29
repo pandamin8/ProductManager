@@ -365,7 +365,7 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea/
 
-ProductManager.API/appsettings.json
-ProductManager.API/appsettings.Development.json
+src/ProductManager.API/appsettings.json
+src/ProductManager.API/appsettings.Development.json
 
 init.sql
