@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using ProductManager.Domain.Constants;
 using ProductManager.Domain.Entities;
+using ProductManager.Domain.Types;
 using ProductManager.Infrastructure.Persistence;
 using ProductManager.Infrastructure.Repositories;
 using Xunit;
@@ -62,8 +63,16 @@ public class ProductsRepositoryTest
     public async Task GetAllMatchingAsync_WithSearchPhrase_FiltersCorrectly()
     {
         // Act
+        var input = new GetAllMatchingProductsInput(
+            SearchPhrase: "Product",
+            PageSize: 10,
+            PageNumber: 1,
+            SortBy: null,
+            SortDirection: SortDirection.Ascending
+        );
+        
         var (products, totalCount) =
-            await _repository.GetAllMatchingAsync("Product", 10, 1, null, SortDirection.Ascending);
+            await _repository.GetAllMatchingAsync(input);
 
         // Assert
         totalCount.Should().Be(3);
@@ -76,7 +85,15 @@ public class ProductsRepositoryTest
     public async Task GetAllMatchingAsync_WithPaging_ReturnsCorrectPage()
     {
         // Act
-        var (products, totalCount) = await _repository.GetAllMatchingAsync(null, 2, 1, null, SortDirection.Ascending);
+        var input = new GetAllMatchingProductsInput(
+            SearchPhrase: null,
+            PageSize: 2,
+            PageNumber: 1,
+            SortBy: null,
+            SortDirection: SortDirection.Ascending
+        );
+        
+        var (products, totalCount) = await _repository.GetAllMatchingAsync(input);
 
         // Assert
         totalCount.Should().Be(3);
@@ -87,8 +104,16 @@ public class ProductsRepositoryTest
     public async Task GetAllMatchingAsync_WithSorting_SortsCorrectly()
     {
         // Act
+        var input = new GetAllMatchingProductsInput(
+            SearchPhrase: null,
+            PageSize: 10,
+            PageNumber: 1,
+            SortBy: nameof(Product.ProduceDate),
+            SortDirection: SortDirection.Descending
+        );
+        
         var (products, totalCount) =
-            await _repository.GetAllMatchingAsync(null, 10, 1, nameof(Product.ProduceDate), SortDirection.Descending);
+            await _repository.GetAllMatchingAsync(input);
 
         // Assert
         totalCount.Should().Be(3);
@@ -99,7 +124,15 @@ public class ProductsRepositoryTest
     public async Task GetAllMatchingAsync_WithNoSearchPhrase_ReturnsAll()
     {
         // Act
-        var (products, totalCount) = await _repository.GetAllMatchingAsync(null, 10, 1, null, SortDirection.Ascending);
+        var input = new GetAllMatchingProductsInput(
+            SearchPhrase: null,
+            PageSize: 10,
+            PageNumber: 1,
+            SortBy: null,
+            SortDirection: SortDirection.Descending
+        );
+        
+        var (products, totalCount) = await _repository.GetAllMatchingAsync(input);
 
         // Assert
         totalCount.Should().Be(3);
