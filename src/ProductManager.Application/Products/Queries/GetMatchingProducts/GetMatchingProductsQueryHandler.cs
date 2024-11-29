@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using ProductManager.Application.Common;
 using ProductManager.Application.Products.Dtos;
 using ProductManager.Domain.Repositories;
+using ProductManager.Domain.Types;
 
 namespace ProductManager.Application.Products.Queries.GetMatchingProducts;
 
@@ -17,14 +18,16 @@ public class GetMatchingProductsQueryHandler(
     {
         logger.LogInformation("Retrieving matching products.");
 
+        var input = new GetAllMatchingProductsInput(
+            SearchPhrase: request.SearchPhrase,
+            PageNumber: request.PageNumber,
+            PageSize: request.PageSize,
+            SortBy: request.SortBy,
+            SortDirection: request.SortDirection
+        );
+        
         var (products, totalCount) =
-            await productsRepository.GetAllMatchingAsync(
-                request.SearchPhrase,
-                request.PageSize,
-                request.PageNumber,
-                request.SortBy,
-                request.SortDirection
-            );
+            await productsRepository.GetAllMatchingAsync(input);
 
         var productsDto = mapper.Map<IEnumerable<ProductDto>>(products);
 

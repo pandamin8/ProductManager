@@ -3,16 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using ProductManager.Domain.Constants;
 using ProductManager.Domain.Entities;
 using ProductManager.Domain.Repositories;
+using ProductManager.Domain.Types;
 using ProductManager.Infrastructure.Persistence;
 
 namespace ProductManager.Infrastructure.Repositories;
 
 public class ProductsRepository(ProductManagerDbContext dbContext) : IProductsRepository
 {
-    public async Task<(IEnumerable<Product>, int)> GetAllMatchingAsync(string? searchPhrase, int pageSize,
-        int pageNumber, string? sortBy, SortDirection sortDirection)
+    public async Task<(IEnumerable<Product>, int)> GetAllMatchingAsync(GetAllMatchingProductsInput input)
     {
-        var searchPhraseLower = searchPhrase?.ToLower();
+        var searchPhraseLower = input.SearchPhrase?.ToLower();
 
         var baseQuery = dbContext
             .Products
@@ -20,7 +20,7 @@ public class ProductsRepository(ProductManagerDbContext dbContext) : IProductsRe
 
         var totalCount = await baseQuery.CountAsync();
 
-        if (sortBy != null)
+        if (input.SortBy != null)
         {
             var columnsSelector = new Dictionary<string, Expression<Func<Product, object>>>
             {
@@ -28,17 +28,17 @@ public class ProductsRepository(ProductManagerDbContext dbContext) : IProductsRe
                 { nameof(Product.ProduceDate), p => p.ProduceDate }
             };
             
-            var selectedColumn = columnsSelector[sortBy];
+            var selectedColumn = columnsSelector[input.SortBy];
             
             baseQuery =
-                sortDirection == SortDirection.Ascending
+                input.SortDirection == SortDirection.Ascending
                 ? baseQuery.OrderBy(selectedColumn)
                 : baseQuery.OrderByDescending(selectedColumn);
         }
         
         var products = await baseQuery
-            .Skip(pageSize * (pageNumber - 1))
-            .Take(pageSize)
+            .Skip(input.PageSize * (input.PageNumber - 1))
+            .Take(input.PageSize)
             .ToListAsync();
 
         return (products, totalCount);
