@@ -16,6 +16,7 @@ public class ProductsRepository(ProductManagerDbContext dbContext) : IProductsRe
 
         var baseQuery = dbContext
             .Products
+            .Include(product => product.User)
             .Where(r => searchPhraseLower == null || (r.Name.ToLower().Contains(searchPhraseLower)))
             .Where(r => input.UserId == null || r.UserId == input.UserId);
 
