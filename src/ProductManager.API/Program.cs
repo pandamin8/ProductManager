@@ -3,6 +3,7 @@ using ProductManager.API.Middlewares;
 using ProductManager.Application.Extensions;
 using ProductManager.Domain.Entities;
 using ProductManager.Infrastructure.Extensions;
+using ProductManager.Infrastructure.Persistence;
 using ProductManager.Infrastructure.Seeders;
 using Serilog;
 
@@ -14,6 +15,9 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 var scope = app.Services.CreateScope();
+
+var dbContext = scope.ServiceProvider.GetRequiredService<ProductManagerDbContext>();
+dbContext.Database.EnsureCreated();
 
 var seeder = scope.ServiceProvider.GetRequiredService<IProductManagerSeeder>();
 await seeder.Seed();
