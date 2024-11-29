@@ -35,23 +35,40 @@ public class ProductsRepositoryTest
     private void SeedDatabase()
     {
         _dbContext.Products.RemoveRange(_dbContext.Products);
+        _dbContext.Users.RemoveRange(_dbContext.Users);
+
+        var user1 = new User()
+        {
+            Id = "1",
+            Email = "test1@test.com",
+            FirstName = "Test",
+            LastName = "Test",
+        };
+        
+        var user2 = new User()
+        {
+            Id = "2",
+            Email = "test2@test.com",
+            FirstName = "Test",
+            LastName = "Test",
+        };
         
         var products = new List<Product>
         {
             new Product
             {
                 Id = 1, Name = "Product A", ProduceDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-10)),
-                UserId = "1", IsAvailable = true
+                UserId = "1", IsAvailable = true, User = user1
             },
             new Product
             {
-                Id = 2, Name = "Product B", ProduceDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-5)), UserId = "1",
-                IsAvailable = true
+                Id = 2, Name = "Product B", ProduceDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-5)), UserId = "2",
+                IsAvailable = true, User = user2
             },
             new Product
             {
-                Id = 3, Name = "Another Product", ProduceDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1)),
-                UserId = "1", IsAvailable = true
+                Id = 3, Name = "Product C", ProduceDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-1)),
+                UserId = "1", IsAvailable = true, User = user1
             },
         };
 
@@ -68,7 +85,8 @@ public class ProductsRepositoryTest
             PageSize: 10,
             PageNumber: 1,
             SortBy: null,
-            SortDirection: SortDirection.Ascending
+            SortDirection: SortDirection.Ascending,
+            UserId: null
         );
         
         var (products, totalCount) =
@@ -76,9 +94,11 @@ public class ProductsRepositoryTest
 
         // Assert
         totalCount.Should().Be(3);
-        products.Should().HaveCount(3);
-        products.Should().Contain(p => p.Name == "Product A");
-        products.Should().Contain(p => p.Name == "Product B");
+        var enumerable = products as Product[] ?? products.ToArray();
+        
+        enumerable.Should().HaveCount(3);
+        enumerable.Should().Contain(p => p.Name == "Product A");
+        enumerable.Should().Contain(p => p.Name == "Product B");
     }
 
     [Fact]
@@ -90,7 +110,8 @@ public class ProductsRepositoryTest
             PageSize: 2,
             PageNumber: 1,
             SortBy: null,
-            SortDirection: SortDirection.Ascending
+            SortDirection: SortDirection.Ascending,
+            UserId: null
         );
         
         var (products, totalCount) = await _repository.GetAllMatchingAsync(input);
@@ -109,7 +130,8 @@ public class ProductsRepositoryTest
             PageSize: 10,
             PageNumber: 1,
             SortBy: nameof(Product.ProduceDate),
-            SortDirection: SortDirection.Descending
+            SortDirection: SortDirection.Descending,
+            UserId: null
         );
         
         var (products, totalCount) =
@@ -117,7 +139,7 @@ public class ProductsRepositoryTest
 
         // Assert
         totalCount.Should().Be(3);
-        products.First().Name.Should().Be("Another Product");
+        products.First().Name.Should().Be("Product C");
     }
 
     [Fact]
@@ -129,7 +151,8 @@ public class ProductsRepositoryTest
             PageSize: 10,
             PageNumber: 1,
             SortBy: null,
-            SortDirection: SortDirection.Descending
+            SortDirection: SortDirection.Descending,
+            UserId: null
         );
         
         var (products, totalCount) = await _repository.GetAllMatchingAsync(input);
@@ -138,4 +161,27 @@ public class ProductsRepositoryTest
         totalCount.Should().Be(3);
         products.Should().HaveCount(3);
     }
+    
+    [Fact]
+    public async Task GetAllMatchingAsync_WithUserIdFilter_FiltersCorrectly()
+    {
+        // Act
+        var input = new GetAllMatchingProductsInput(
+            SearchPhrase: null,
+            PageSize: 10,
+            PageNumber: 1,
+            SortBy: null,
+            SortDirection: SortDirection.Descending,
+            UserId: "1"
+        );
+        
+        var (products, totalCount) = await _repository.GetAllMatchingAsync(input);
+
+        // Assert
+        totalCount.Should().Be(2);
+        var enumerable = products as Product[] ?? products.ToArray();
+        
+        enumerable.Should().Contain(p => p.Name == "Product A");
+        enumerable.Should().Contain(p => p.Name == "Product C");
+    } 
 }
