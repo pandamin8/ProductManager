@@ -7,5 +7,6 @@ public record GetAllMatchingProductsInput(
     int PageSize,
     int PageNumber,
     string? SortBy,
-    SortDirection SortDirection
+    SortDirection SortDirection,
+    string? UserId
     );

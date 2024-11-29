@@ -23,7 +23,8 @@ public class GetMatchingProductsQueryHandler(
             PageNumber: request.PageNumber,
             PageSize: request.PageSize,
             SortBy: request.SortBy,
-            SortDirection: request.SortDirection
+            SortDirection: request.SortDirection,
+            UserId: request.UserId
         );
         
         var (products, totalCount) =
