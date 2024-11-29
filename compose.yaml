@@ -19,7 +19,7 @@ services:
   productmanager.api:
     image: productmanager.api
     build:
-      context: .
+      context: src
       dockerfile: ProductManager.API/Dockerfile
     ports:
       - "8080:8080"
